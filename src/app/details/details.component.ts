@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-manage',
   standalone: true,
   imports: [],
-  templateUrl: './manage.component.html',
-  styleUrl: './manage.component.css'
+  templateUrl: './details.component.html',
+  styleUrl: './details.component.css'
 })
 export class ManageComponent {
 

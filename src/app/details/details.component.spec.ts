@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageComponent } from './manage.component';
+import { ManageComponent } from './details.component';
 
 describe('ManageComponent', () => {
   let component: ManageComponent;
@@ -11,7 +11,7 @@ describe('ManageComponent', () => {
       imports: [ManageComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(ManageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
