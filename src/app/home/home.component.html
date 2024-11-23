@@ -1,10 +1,7 @@
 <div class="home-view">
   <div class="container">
     <div class="left-top cards-container">
-      <app-card class="card" title="Total Users" value="100"></app-card>
-      <app-card class="card" title="Total Orders" value="200"></app-card>
-      <app-card class="card" title="Total Revenue" value="300"></app-card>
-      <app-card class="card" title="Average Wait Time" value="< 5 min"></app-card>
+      <app-card *ngFor="let card of cards | slice:0:4" class="card" [title]="card.title" [value]="card.value"></app-card>
     </div>
     <div class="left-bottom">
       <div class="map-container">

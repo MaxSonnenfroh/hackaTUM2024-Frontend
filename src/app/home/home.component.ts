@@ -13,7 +13,7 @@ type Message = {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CardComponent, CommonModule, MapComponent, ChartViewComponent],
+  imports: [CardComponent, MapComponent, ChartViewComponent, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -57,19 +57,19 @@ export class HomeComponent {
   }
 
   cards: CardComponent[] = [{
-    title: 'Total Time',
-    value: 1
-  }, {
-    title: 'Average Wait Time',
-    value: 2
+    title: 'Active Vehicles',
+    value: 34
+  },
+  {
+    title: 'Total Number of Trips',
+    value: 72
+  },
+  {    title: 'Average Wait Time',
+    value: "< 5 mins"
   },
   {
     title: 'Average Load',
-    value: 3
-  },
-  {
-    title: 'Vehicles with load > 75%',
-    value: 4
+    value: "86%"
   },
   {
     title: 'Vehicles with load < 25%',
