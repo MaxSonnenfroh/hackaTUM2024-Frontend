@@ -1,1 +1,15 @@
-<p>manage works!</p>
+<div class="container">
+  <div class="left-top">
+    <h2>Details</h2>
+    <ul class="overview">
+      <li><div class="box">Total Time: {{ totalTime}}</div></li>
+      <li><div class="box">Average Utilization: {{ averageUtilization }}</div></li>
+      <li><div class="box">Average Wait Time: {{ averageWait }}</div></li>
+    </ul>
+  </div>
+  <div class="right-top">
+    <h2>Top 3 Vehicles</h2>
+    <ul class="overview">
+      <li *ngFor="let vehicle of top3Vehicles"><div class="box">{{vehicle.id}}: {{vehicle.percentage*100}}% average load</div></li>
+    </ul>
+</div>
