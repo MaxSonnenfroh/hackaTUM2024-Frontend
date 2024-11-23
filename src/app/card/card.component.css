@@ -14,6 +14,18 @@
   transition: transform 0.3s;
 }
 
+@media (max-width: 768px) {
+  .card {
+    flex: 1 1 calc(50% - 16px);
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex: 1 1 100%;
+  }
+}
+
 .card.modern-card:hover {
   transform: scale(1.05);
 }
@@ -21,6 +33,11 @@
 .card h3 {
   margin: 0 0 8px;
   font-size: 1.5em;
+  text-align: center;
+  vertical-align: text-top;
+  position: relative;
+  top: 5px;
+  left: 5px;
 }
 
 .card p {

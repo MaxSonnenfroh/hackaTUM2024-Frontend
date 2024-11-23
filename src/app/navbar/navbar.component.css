@@ -1,6 +1,7 @@
 .navbar {
   background-color: black;
   padding: 0.7rem;
+  height: 60px; /* Set a fixed height for the navbar */
 }
 
 .navbar-content {

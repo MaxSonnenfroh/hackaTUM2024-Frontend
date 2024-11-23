@@ -8,6 +8,7 @@ export type ChartOptions = {
   labels: any;
   fill: any;
   colors: any;
+  legend: any;
 };
 
 @Component({
@@ -30,6 +31,18 @@ export class ChartViewComponent {
       labels: ["Waiting", "In Transit", "Delivered"],
       fill: ["#FFFFFF", "#00E396", "#008FFB"],
       colors: ["#FF0000", "#E9802B", "#00FF00"],
+      legend: {
+        position: "top",
+        horizontalAlign: "center",
+        fontSize: "14px",
+        markers: {
+          width: 20,
+          height: 20
+        },
+        itemMargin: {
+          vertical: 10
+        }
+      },
       responsive: [
         {
           breakpoint: 480,

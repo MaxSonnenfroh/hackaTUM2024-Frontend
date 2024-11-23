@@ -4,6 +4,8 @@
   padding: 2px;
   box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
   margin: 0 auto;
-  height: 500px;
+  height: 450px;
   width: 100%;
+  padding: 15px;
+  border-radius: 5px;
 }
