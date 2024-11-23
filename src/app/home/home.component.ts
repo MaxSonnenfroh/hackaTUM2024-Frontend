@@ -22,6 +22,7 @@ export class HomeComponent {
   messages: Message[] = [];
   totalVehicles: number = 0;
   totalCustomers: number = 0;
+  allCustomersServed: boolean = false;
 
   vehicles: Vehicle[] = [];
   customers: Customer[] = [];
@@ -74,6 +75,9 @@ export class HomeComponent {
       this.updateCard('Average Load per Vehicle', updateMessage.averageUtilization*100 + "%");
       let newData = [updateMessage.waitingCustomers.length, updateMessage.customersOnTransit.length, updateMessage.dropedCustomers.length];
       this.updateChart(newData);
+      if (updateMessage.dropedCustomers.length === this.customers.length) {
+        this.allCustomersServed = true;
+      }
     }
   }
 

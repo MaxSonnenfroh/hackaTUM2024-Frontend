@@ -14,7 +14,7 @@
         <h2>Customer Overview</h2>
         <app-chart></app-chart>
       </div>
-      <div class="right-bottom">
+      <div class="right-bottom overview-container">
         <h2>General Overview</h2>
         <!-- Hier kommt die Gernral Overview Componente -->
         <ul class="general-overview-list">
@@ -24,10 +24,10 @@
           <li>
             <strong>Total Cars:</strong> {{ generalOverviewItems[1] }}
           </li>
-          <li>
+          <li [hidden]="!allCustomersServed">
             <strong>Total Distance Covered:</strong> {{ generalOverviewItems[2] }} km
           </li>
-          <li>
+          <li [hidden]="!allCustomersServed">
             <strong>Total Time Passed:</strong> {{ generalOverviewItems[3] }} mins
           </li>
         </ul>
