@@ -1,5 +1,16 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
+
+interface MarkerDictionary {
+  id: string;
+  idx: number;
+}
+
+interface LineDictionary {
+  id: string;
+  line: L.Polyline;
+}
+
 
 @Component({
   selector: 'app-map',
@@ -7,7 +18,7 @@ import * as L from 'leaflet';
   styleUrls: ['./map.component.css'],
   standalone: true
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements AfterViewInit {
   // Icons
   private customerIcon = L.icon({
     iconUrl: '../../assets/customermarker.png',
@@ -24,11 +35,17 @@ export class MapComponent implements OnInit, AfterViewInit {
   });
 
   private depotIcon = L.icon({
-    iconUrl: '../../assets/depotmarker.png',
+    iconUrl: '../../assets/destinationmarker.png',
     iconSize: [25, 41],
     iconAnchor: [12, 20],
     popupAnchor: [0, -20]
   });
+
+  // Save markers for later reference
+  private vehicleMarkers:  MarkerDictionary[] = [];
+  private depotMarkers: MarkerDictionary[] = [];
+  private customerMarkers: MarkerDictionary[] = [];
+  private lineMarkers: LineDictionary[] = [];
 
   // Add custom markers
   private addCustomMarkers(lat: number, lon: number, type: L.Icon<L.IconOptions> ) {
@@ -59,23 +76,9 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
   ngAfterViewInit() {
     this.initMap();
     this.centerMap();
-    let index = this.addCustomMarkers(48.138077, 11.577993, this.vehicleIcon);
-    // Save index for later reference => this.markers[index]
-
-
-    const points: L.LatLngExpression[] = [
-      [48.138077, 11.577993],
-      [48.140, 11.57700]
-    ];
-    let line = this.drawDashedLine(points);
-    // Save line for later reference => line.remove(this.map)
-
   }
 
   private initMap() {
@@ -85,10 +88,35 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   private centerMap() {
-    // Create a boundary based on the markers
     const bounds = L.latLngBounds(this.markers.map(marker => marker.getLatLng()));
+  }
 
-    // Fit the map into the boundary
-    // this.map.fitBounds(bounds);
+  public initMapMarkers(id: string, lon: number, lat: number, type: string) {
+    let markerIdx: number;
+    switch(type) {
+      case 'vehicle':
+        markerIdx = this.addCustomMarkers(lon, lat, this.vehicleIcon);
+        this.vehicleMarkers.push({id: id, idx: markerIdx});
+        break;
+
+      case 'depot':
+        markerIdx = this.addCustomMarkers(lon, lat, this.depotIcon);
+        this.depotMarkers.push({id: id, idx: markerIdx});
+        break;
+
+      case 'customer':
+        markerIdx = this.addCustomMarkers(lon, lat, this.customerIcon);
+        this.customerMarkers.push({id: id, idx: markerIdx});
+        break;
+    }
+  }
+
+  public initMapLine(id: string, startLat: number, startLon: number, endLat: number, endLon: number) {
+    const points: L.LatLngExpression[] = [
+      [startLat, startLon],
+      [endLat, endLon]
+    ];
+    let line = this.drawDashedLine(points);
+    this.lineMarkers.push({id: id, line: line});
   }
 }

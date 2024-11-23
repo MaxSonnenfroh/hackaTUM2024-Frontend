@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CardComponent } from '../card/card.component';
 import { CommonModule } from '@angular/common';
 import { WebSocketService } from '../services/websocket.service';
@@ -9,6 +9,7 @@ import { Vehicle } from '../types/Vehicle';
 import { Customer } from '../types/Customer';
 import { InitMessage } from '../types/InitMessage';
 import { UpdateMessage } from '../types/UpdateMessage';
+import { Xliff } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +26,9 @@ export class HomeComponent {
   vehicles: Vehicle[] = [];
   customers: Customer[] = [];
 
+  @ViewChild(ChartViewComponent) chartComponent?: ChartViewComponent;
+  @ViewChild(MapComponent) mapComponent?: MapComponent;
+
   constructor(private wsService: WebSocketService) {
     this.wsService.getMessages().subscribe((message: Message) => {
       this.messages.push(message);
@@ -34,14 +38,35 @@ export class HomeComponent {
 
   private parseMessage(message: Message) {
     if (message.key === 'init') {
-      this.vehicles = (message.value as InitMessage).vehicles;
-      this.customers = (message.value as InitMessage).customer;
+      console.log('init message', message);
+      let initMessage = message.value as InitMessage;
+      this.vehicles = initMessage.vehicles;
+      this.customers = initMessage.customer;
+      //initialize the cards
+      let initData = [initMessage.customer.length, 0, 0];
+      this.updateChart(initData);
+      //initialize the map
+      this.vehicles.forEach((vehicle, idx) => {
+        if (this.mapComponent) {
+          this.mapComponent.initMapMarkers(vehicle.id, vehicle.startCoordinate.latitude, vehicle.startCoordinate.longitude, 'vehicle');
+        }
+      });
+      this.customers.forEach((customer, idx) => {
+        if (this.mapComponent) {
+          this.mapComponent.initMapMarkers(customer.id, customer.startCoordinate.latitude, customer.startCoordinate.longitude, 'customer');
+          this.mapComponent.initMapMarkers(customer.id, customer.destinationCoordinate.latitude, customer.destinationCoordinate.longitude, 'depot');
+          this.mapComponent.initMapLine(customer.id, customer.startCoordinate.latitude, customer.startCoordinate.longitude, customer.destinationCoordinate.latitude, customer.destinationCoordinate.longitude);
+        }
+      });
     } else {
+      console.log('update message', message);
       let updateMessage = message.value as UpdateMessage;
       this.updateCard('Active Vehicles', this.vehicles.length - updateMessage.dropedCustomers.length);
       this.updateCard('Total Number of Trips', updateMessage.dropedCustomers.length);
       this.updateCard('Average Wait Time', "< " + updateMessage.averageWait + " mins");
       this.updateCard('Average Load per Vehicle', updateMessage.averageUtilization*100 + "%");
+      let newData = [updateMessage.waitingCustomers.length, updateMessage.customersOnTransit.length, updateMessage.dropedCustomers.length];
+      this.updateChart(newData);
     }
   }
 
@@ -49,6 +74,12 @@ export class HomeComponent {
     let card = this.cards.find(card => card.title === type);
     if (card) {
       card.value = value;
+    }
+  }
+
+  private updateChart(newData: number[]) {
+    if (this.chartComponent) {
+      this.chartComponent.data = newData;
     }
   }
 
@@ -65,7 +96,7 @@ export class HomeComponent {
   },
   {
     title: 'Average Load per Vehicle',
-    value: "86%"
+    value: "0%"
   }
 ]
 
