@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
+  margin: 16px;
 }
 
 .card {
@@ -24,3 +25,20 @@
     flex: 1 1 100%;
   }
 }
+
+.map, .chart {
+  display: inline-block;
+  vertical-align: top;
+  width: 49%;
+  box-sizing: border-box;
+  margin: 0 0.5%;
+}
+
+.chart {
+  display: inline-block;
+  vertical-align: top;
+  width: 35%;
+  box-sizing: border-box;
+  margin: 0 0.5%;
+}
+
