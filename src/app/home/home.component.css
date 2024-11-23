@@ -83,7 +83,23 @@
 
 .right {
   grid-column: 2; /* Second column */
-  grid-row: 1 / span 2; /* Spans both rows */
+  grid-row: 1 / span 2; /* First row, span two rows */
+  display: grid;
+  grid-template-columns: 1fr; /* Single column layout */
+  grid-template-rows: 1fr 1fr; /* Two rows of equal height */
+  gap: 10px; /* Adjust the gap between grid items */
+  background-color: green;
+}
+
+.right-inner-top{
+  grid-column: 2; /* Second column */
+  grid-row: 1; /* First row */
+  /* background-color: lightcoral; Optional styling for visualization */
+}
+
+.right-inner-bottom{
+  grid-column: 2; /* Second column */
+  grid-row: 2; /* Second row */
   /* background-color: lightcoral; Optional styling for visualization */
 }
 

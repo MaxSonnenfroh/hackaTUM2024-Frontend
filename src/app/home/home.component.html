@@ -1,7 +1,8 @@
 <div class="home-view">
   <div class="container">
     <div class="left-top cards-container">
-      <app-card *ngFor="let card of cards | slice:0:4" class="card" [title]="card.title" [value]="card.value"></app-card>
+      <app-card *ngFor="let card of cards | slice:0:4" class="card" [title]="card.title"
+        [value]="card.value"></app-card>
     </div>
     <div class="left-bottom">
       <div class="map-container">
@@ -9,20 +10,13 @@
       </div>
     </div>
     <div class="right">
-
-      <div class="chart-container">
+      <div class="right-top chart-container">
         <h2>Customer Overview</h2>
         <app-chart></app-chart>
       </div>
+      <div class="right-bottom">
+        <h2>General Overview</h2>
+        <!-- Hier kommt die Gernral Overview Componente -->
     </div>
   </div>
 </div>
-<!--
-<div class="dashboard">
-  <app-card *ngFor="let card of cards" [title]="card.title" [value]="card.value"></app-card>
-</div> -->
-
-
-
-
-
