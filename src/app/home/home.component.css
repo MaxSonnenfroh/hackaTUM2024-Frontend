@@ -114,3 +114,31 @@ body, html {
   height: 100%;
   overflow: hidden; /* Prevent any overflow */
 }
+
+.right-bottom {
+  grid-column: 2; /* Second column */
+  grid-row: 2; /* Second row */
+  background-color: #f5f5f5; /* Optional: fügt Konsistenz mit anderen Bereichen hinzu */
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.general-overview-list {
+  list-style-type: none; /* Entfernt die Standard-Aufzählungszeichen */
+  padding: 0;
+  margin: 0;
+}
+
+.general-overview-list li {
+  font-size: 16px; /* Größe des Textes anpassen */
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd; /* Optional: fügt eine Trennlinie zwischen den Einträgen hinzu */
+  background-color: #fff; /* Optional: Weißer Hintergrund für die Einträge */
+  border-radius: 8px; /* Optional: Runde Ecken */
+  margin-bottom: 5px; /* Abstand zwischen den Einträgen */
+}
+
+.general-overview-list li:hover {
+  transform: scale(1.05); /* Vergrößert das Element um 5% */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Fügt einen Schlagschatten hinzu, um den Effekt zu betonen */
+}

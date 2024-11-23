@@ -29,6 +29,8 @@ export class HomeComponent {
   @ViewChild(ChartViewComponent) chartComponent?: ChartViewComponent;
   @ViewChild(MapComponent) mapComponent?: MapComponent;
 
+  generalOverviewItems: any[] = [0, 0, 0, 0];
+
   constructor(private wsService: WebSocketService) {
     this.wsService.getMessages().subscribe((message: Message) => {
       this.messages.push(message);
@@ -42,6 +44,11 @@ export class HomeComponent {
       let initMessage = message.value as InitMessage;
       this.vehicles = initMessage.vehicles;
       this.customers = initMessage.customer;
+
+      // NEU: General Overview initialisieren
+      this.generalOverviewItems[0] = this.customers.length; // Anzahl Kunden
+      this.generalOverviewItems[1] = this.vehicles.length; // Anzahl Fahrzeuge
+
       //initialize the cards
       let initData = [initMessage.customer.length, 0, 0];
       this.updateChart(initData);
