@@ -48,11 +48,11 @@ export class MapComponent implements AfterViewInit {
   private lineMarkers: LineDictionary[] = [];
 
   // Add custom markers
-  private addCustomMarkers(lat: number, lon: number, type: L.Icon<L.IconOptions> ) {
+  private addCustomMarkers(lat: number, lon: number, type: L.Icon<L.IconOptions>, spec: string, id: string) {
     // Example marker with custom icon
     const customMarker = L.marker([lat, lon], { icon: type }).addTo(this.map);
-
-    return this.markers.push(customMarker); // Store in the markers array if needed
+    customMarker.bindPopup(`${spec}: ${id}`);
+    return this.markers.push(customMarker);
   }
 
   // Dashed Line
@@ -69,7 +69,7 @@ export class MapComponent implements AfterViewInit {
     return dashedLine.addTo(this.map);
   }
 
-  private map!: L.Map
+  private map!: L.Map;
   markers: L.Marker[] = [
     L.marker([48.138077, 11.577993]) // Munich, Germany
   ];
@@ -95,17 +95,17 @@ export class MapComponent implements AfterViewInit {
     let markerIdx: number;
     switch(type) {
       case 'vehicle':
-        markerIdx = this.addCustomMarkers(lon, lat, this.vehicleIcon);
+        markerIdx = this.addCustomMarkers(lon, lat, this.vehicleIcon, type, id);
         this.vehicleMarkers.push({id: id, idx: markerIdx});
         break;
 
       case 'depot':
-        markerIdx = this.addCustomMarkers(lon, lat, this.depotIcon);
+        markerIdx = this.addCustomMarkers(lon, lat, this.depotIcon, type, id);
         this.depotMarkers.push({id: id, idx: markerIdx});
         break;
 
       case 'customer':
-        markerIdx = this.addCustomMarkers(lon, lat, this.customerIcon);
+        markerIdx = this.addCustomMarkers(lon, lat, this.customerIcon, type, id);
         this.customerMarkers.push({id: id, idx: markerIdx});
         break;
     }
