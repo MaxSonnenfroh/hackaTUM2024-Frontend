@@ -30,12 +30,12 @@ export class MapComponent implements OnInit, AfterViewInit {
     popupAnchor: [0, -20]
   });
 
-
+  // Add custom markers
   private addCustomMarkers(lat: number, lon: number, type: L.Icon<L.IconOptions> ) {
     // Example marker with custom icon
     const customMarker = L.marker([lat, lon], { icon: type }).addTo(this.map);
 
-    this.markers.push(customMarker); // Store in the markers array if needed
+    return this.markers.push(customMarker); // Store in the markers array if needed
   }
 
   // Dashed Line
@@ -49,7 +49,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
 
     // Add the dashed line to the map
-    dashedLine.addTo(this.map);
+    return dashedLine.addTo(this.map);
   }
 
   private map!: L.Map
@@ -65,13 +65,17 @@ export class MapComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.initMap();
     this.centerMap();
-    this.addCustomMarkers(48.138077, 11.577993, this.vehicleIcon);
+    let index = this.addCustomMarkers(48.138077, 11.577993, this.vehicleIcon);
+    // Save index for later reference => this.markers[index]
+
 
     const points: L.LatLngExpression[] = [
-      [48.138077, 11.577993], // Munich
+      [48.138077, 11.577993],
       [48.140, 11.57700]
     ];
-    this.drawDashedLine(points);
+    let line = this.drawDashedLine(points);
+    // Save line for later reference => line.remove(this.map)
+
   }
 
   private initMap() {
