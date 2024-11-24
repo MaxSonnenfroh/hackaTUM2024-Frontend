@@ -9,12 +9,13 @@ import { Vehicle } from '../types/Vehicle';
 import { Customer } from '../types/Customer';
 import { InitMessage } from '../types/InitMessage';
 import { UpdateMessage } from '../types/UpdateMessage';
-import { Xliff } from '@angular/compiler';
+import { TimeFormatPipe } from '../services/time.format.pipe';
+import { DecimalFormatPipe } from '../services/decimal-format.pipe';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CardComponent, MapComponent, ChartViewComponent, CommonModule],
+  imports: [CardComponent, MapComponent, ChartViewComponent, CommonModule, TimeFormatPipe, DecimalFormatPipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -44,14 +45,14 @@ export class HomeComponent {
       console.log('init message', message);
       let initMessage = message.value as InitMessage;
       this.vehicles = initMessage.vehicles;
-      this.customers = initMessage.customer;
+      this.customers = initMessage.customers;
 
       // NEU: General Overview initialisieren
       this.generalOverviewItems[0] = this.customers.length; // Anzahl Kunden
       this.generalOverviewItems[1] = this.vehicles.length; // Anzahl Fahrzeuge
 
       //initialize the cards
-      let initData = [initMessage.customer.length, 0, 0];
+      let initData = [initMessage.customers.length, 0, 0];
       this.updateChart(initData);
       //initialize the map
       this.vehicles.forEach((vehicle, idx) => {
@@ -69,14 +70,18 @@ export class HomeComponent {
     } else {
       console.log('update message', message);
       let updateMessage = message.value as UpdateMessage;
-      this.updateCard('Active Vehicles', this.vehicles.length - updateMessage.dropedCustomers.length);
+      this.updateCard('Active Vehicles', updateMessage.customersOnTransit.length);
       this.updateCard('Total Number of Trips', updateMessage.dropedCustomers.length);
-      this.updateCard('Average Wait Time', "< " + updateMessage.averageWait + " mins");
-      this.updateCard('Average Load per Vehicle', updateMessage.averageUtilization*100 + "%");
+      this.updateCard('Average Wait Time', "< " + Math.round(updateMessage.averageWait / 60) + " min");
+      this.updateCard('Average Load per Vehicle', Math.round(updateMessage.averageUtilization) + "%");
       let newData = [updateMessage.waitingCustomers.length, updateMessage.customersOnTransit.length, updateMessage.dropedCustomers.length];
       this.updateChart(newData);
       if (updateMessage.dropedCustomers.length === this.customers.length) {
         this.allCustomersServed = true;
+        let distances = updateMessage.currentDistance;
+        let totalDistance = Object.values(distances).reduce((a, b) => a + b, 0);
+        this.generalOverviewItems[2] = totalDistance.toFixed(2);
+        this.generalOverviewItems[3] = updateMessage.totalTime;
       }
     }
   }

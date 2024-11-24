@@ -25,10 +25,10 @@
             <strong>Total Cars:</strong> {{ generalOverviewItems[1] }}
           </li>
           <li [hidden]="!allCustomersServed">
-            <strong>Total Distance Covered:</strong> {{ generalOverviewItems[2] }} km
+            <strong>Total Distance Covered:</strong> {{ generalOverviewItems[2]/1000 | decimalFormat }} km
           </li>
           <li [hidden]="!allCustomersServed">
-            <strong>Total Time Passed:</strong> {{ generalOverviewItems[3] }} mins
+            <strong>Total Time Passed:</strong> {{ generalOverviewItems[3] | timeFormat }}
           </li>
         </ul>
     </div>

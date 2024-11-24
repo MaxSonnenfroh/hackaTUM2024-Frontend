@@ -1,6 +1,6 @@
 export interface InitMessage {
   vehicles: Vehicle[]
-  customer: Customer[]
+  customers: Customer[]
 }
 
 export interface Vehicle {
