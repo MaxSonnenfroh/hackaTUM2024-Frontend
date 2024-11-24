@@ -83,7 +83,7 @@ export class MapComponent implements AfterViewInit {
 
   private initMap() {
     const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    this.map = L.map('map').setView([48.138077, 11.577993], 15);
+    this.map = L.map('map').setView([48.138077, 11.577993], 11);
     L.tileLayer(baseMapURl).addTo(this.map);
   }
 

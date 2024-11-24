@@ -1,6 +1,7 @@
 export interface UpdateMessage {
   totalTime: string
   averageWait: number
+  waitingTimes: WaitTime
   averageUtilization: number
   loadBigger75: LoadBigger75[]
   loadSmaler25: LoadSmaler25[]
@@ -27,10 +28,9 @@ export interface ExtremeWaitTime {
 }
 
 export interface CurrentDistance {
-  id1: number
-  id2: number
-  id3: number
-  id4: number
-  id5: number
-  id6: number
+  [key: string]: number
+}
+
+export interface WaitTime {
+  [key: string]: number
 }
