@@ -166,6 +166,6 @@ body, html {
 }
 
 .general-overview-list li:hover {
-  transform: scale(1.05); /* Vergrößert das Element um 5% */
+  transform: scale(1.01); /* Vergrößert das Element um 5% */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Fügt einen Schlagschatten hinzu, um den Effekt zu betonen */
 }

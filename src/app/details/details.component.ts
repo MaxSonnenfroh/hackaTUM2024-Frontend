@@ -25,6 +25,12 @@ export class ManageComponent implements OnInit {
   dropedCustomers: string[] = [];
   currentDistance: {[key: string]: number} = {};
 
+  highestDistance: number = 5; 
+  shortestDistance: number = 1; 
+  currentDistanceXX: number = 0;
+  averageTripDistance: any = 0;
+  averageSpeed: any = 0;
+
   constructor() {
   }
 
