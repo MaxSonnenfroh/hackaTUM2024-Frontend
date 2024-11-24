@@ -11,16 +11,19 @@ import { InitMessage } from '../types/InitMessage';
 import { UpdateMessage } from '../types/UpdateMessage';
 import { TimeFormatPipe } from '../services/time.format.pipe';
 import { DecimalFormatPipe } from '../services/decimal-format.pipe';
+import { ManageComponent } from '../details/details.component';
+import { SharedService } from '../services/shared.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CardComponent, MapComponent, ChartViewComponent, CommonModule, TimeFormatPipe, DecimalFormatPipe],
+  imports: [CardComponent, MapComponent, ChartViewComponent, CommonModule, TimeFormatPipe, DecimalFormatPipe, ManageComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
   messages: Message[] = [];
+  currentMessage: UpdateMessage | undefined;
   totalVehicles: number = 0;
   totalCustomers: number = 0;
   allCustomersServed: boolean = false;
@@ -30,10 +33,11 @@ export class HomeComponent {
 
   @ViewChild(ChartViewComponent) chartComponent?: ChartViewComponent;
   @ViewChild(MapComponent) mapComponent?: MapComponent;
+  @ViewChild(ManageComponent) detailComponent?: ManageComponent;
 
   generalOverviewItems: any[] = [0, 0, 0, 0];
 
-  constructor(private wsService: WebSocketService) {
+  constructor(private wsService: WebSocketService, private sharedService: SharedService) {
     this.wsService.getMessages().subscribe((message: Message) => {
       this.messages.push(message);
       this.parseMessage(message);
@@ -70,10 +74,11 @@ export class HomeComponent {
     } else {
       console.log('update message', message);
       let updateMessage = message.value as UpdateMessage;
+      this.currentMessage = updateMessage;
       this.updateCard('Active Vehicles', updateMessage.customersOnTransit.length);
       this.updateCard('Total Number of Trips', updateMessage.dropedCustomers.length);
       this.updateCard('Average Wait Time', "< " + Math.round(updateMessage.averageWait / 60) + " min");
-      this.updateCard('Average Load per Vehicle', Math.round(updateMessage.averageUtilization) + "%");
+      this.updateCard('Average Load per Vehicle', Math.round(updateMessage.averageUtilization * 100) + "%");
       let newData = [updateMessage.waitingCustomers.length, updateMessage.customersOnTransit.length, updateMessage.dropedCustomers.length];
       this.updateChart(newData);
       if (updateMessage.dropedCustomers.length === this.customers.length) {
@@ -83,6 +88,10 @@ export class HomeComponent {
         this.generalOverviewItems[2] = totalDistance.toFixed(2);
         this.generalOverviewItems[3] = updateMessage.totalTime;
       }
+      if (this.detailComponent){
+        this.detailComponent.message = updateMessage;
+      }
+      this.sharedService.updateMessage(updateMessage);
     }
   }
 
